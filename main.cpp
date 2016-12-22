@@ -16,7 +16,12 @@
 #define _A6   1760 // A6      = 1760.00Hz
 #define _B6   1976 // B6      = 1975.53Hz
 
+#if defined(TARGET_NUMAKER_PFM_NUC472)
 PwmOut pwm0(PF_9); // PWM0 pin 
+#elif defined(TARGET_NUMAKER_PFM_M453)
+PwmOut pwm0(PC_6); // PWM0_pin
+#endif
+
 
 int main()
 {
