@@ -20,6 +20,8 @@
 PwmOut pwm0(PF_9); // PWM0 pin 
 #elif defined(TARGET_NUMAKER_PFM_M453)
 PwmOut pwm0(PC_6); // PWM0_pin
+#elif defined(TARGET_NUMAKER_PFM_M487)
+PwmOut pwm0(PA_5); // PWM0_pin
 #endif
 
 
