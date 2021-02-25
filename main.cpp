@@ -26,11 +26,18 @@ int main()
         int note[15] = { // array of notes
         _C5, _D5, _E5, _F5, _G5, _A5, _B5,         
         _C6, _D6, _E6, _F6, _G6, _A6, _B6};
+#ifdef MBED_MAJOR_VERSION
+    printf("Mbed OS version %d.%d.%d\r\n\n", MBED_MAJOR_VERSION, MBED_MINOR_VERSION, MBED_PATCH_VERSION);
+#endif
         
         for (i=0; i<14; i++) {
             pwm0.period_us(1000000/note[i]);       // set period per note
             pwm0.pulsewidth_us(1000000/note[i]/2); // set duty cycle to 50%
+#if MBED_MAJOR_VERSION >= 6
+	    ThisThread::sleep_for(100);
+#else
             Thread::wait(100);
+#endif
         }
         pwm0.pulsewidth_us(0); // set dutycycle = 0% to stop
 }
