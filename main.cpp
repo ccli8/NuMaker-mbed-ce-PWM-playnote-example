@@ -1,4 +1,3 @@
-//NuMaker-PFM-NUC472 PWM0 output note to a speaker
 #include "mbed.h"
 
 #define _C5   523  // C5      =  523.25Hz
@@ -16,28 +15,30 @@
 #define _A6   1760 // A6      = 1760.00Hz
 #define _B6   1976 // B6      = 1975.53Hz
 
-/* NOTE: Most targets has UNO D2 for PWM. Check it for supporting new targets */
-PwmOut pwm0(D2);
-
+/* NOTE: Most targets have UNO D2 for PWM. Check it for supporting new targets */
+#if TARGET_NUMAKER_PFM_NUC472
+PwmOut pwm_playnote(D2);
+#endif
 
 int main()
 {
-        int i =0;
-        int note[15] = { // array of notes
+    int i =0;
+    int note[15] = { // array of notes
         _C5, _D5, _E5, _F5, _G5, _A5, _B5,         
-        _C6, _D6, _E6, _F6, _G6, _A6, _B6};
+        _C6, _D6, _E6, _F6, _G6, _A6, _B6
+    };
 #ifdef MBED_MAJOR_VERSION
     printf("Mbed OS version %d.%d.%d\r\n\n", MBED_MAJOR_VERSION, MBED_MINOR_VERSION, MBED_PATCH_VERSION);
 #endif
-        
-        for (i=0; i<14; i++) {
-            pwm0.period_us(1000000/note[i]);       // set period per note
-            pwm0.pulsewidth_us(1000000/note[i]/2); // set duty cycle to 50%
+
+    for (i=0; i<14; i++) {
+        pwm_playnote.period_us(1000000/note[i]);       // set period per note
+        pwm_playnote.pulsewidth_us(1000000/note[i]/2); // set duty cycle to 50%
 #if MBED_MAJOR_VERSION >= 6
-	    ThisThread::sleep_for(100);
+        ThisThread::sleep_for(100ms);
 #else
-            Thread::wait(100);
+        Thread::wait(100);
 #endif
-        }
-        pwm0.pulsewidth_us(0); // set dutycycle = 0% to stop
+    }
+    pwm_playnote.pulsewidth_us(0); // set dutycycle = 0% to stop
 }
